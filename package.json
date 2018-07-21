@@ -1,0 +1,36 @@
+{
+  "name": "tansmock",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "rimraf dist && tsc",
+    "start": "ts-node -r tsconfig-paths/register src/main.dev.ts",
+    "start:dev": "nodemon",
+    "start:prod": "node dist/main.dev.js",
+    "lint": "tslint -p tsconfig.json"
+  },
+  "dependencies": {
+    "@nestjs/common": "^5.1.0",
+    "@nestjs/core": "^5.1.0",
+    "@types/express": "^4.16.0",
+    "@types/lodash": "^4.14.112",
+    "lodash": "^4.17.10",
+    "lowdb": "^1.0.0",
+    "nedb": "^1.8.0",
+    "nodemon": "^1.18.3",
+    "openurl": "^1.1.1",
+    "reflect-metadata": "^0.1.12",
+    "rxjs": "^6.2.2"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^5.3.0",
+    "@types/lowdb": "^1.0.4",
+    "@types/node": "^10.5.2",
+    "rimraf": "^2.6.2",
+    "ts-node": "^7.0.0",
+    "tsconfig-paths": "^3.4.2",
+    "tslint": "^5.11.0",
+    "typescript": "^2.9.2"
+  }
+}
