@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common'
+import { MockService } from 'src/shared/mock.service'
 
 @Module({
-  providers: [],
-  exports: [],
+  providers: [MockService],
+  exports: [MockService],
 })
 export class SharedModule {}

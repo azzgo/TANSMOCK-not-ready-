@@ -1,44 +1,82 @@
-import { Controller, Get, Post, Body, Res, Delete, Param } from '@nestjs/common'
-import { mockModel } from 'src/models/mock'
+import { Controller, Get, Post, Body, Res, Delete, Param, Put } from '@nestjs/common'
+import { MockService } from 'src/shared/mock.service'
 import { Response } from 'express'
 
 @Controller()
 export class MockController {
 
+  constructor(private mockModel: MockService) {}
+
   @Get('/mock/list')
   mockList() {
-    return mockModel.getMockList()
+    return this.mockModel.getMockList()
   }
 
   @Post('/mock')
-  createNewMockURL(@Body('url') url: string, @Res() res: Response) {
-    if (!url.startsWith('/')) {
+  createNewMockURL(@Body('path') path: string, @Res() res: Response) {
+    if (!path.startsWith('/')) {
       return res.status(400).json({
-        message: 'Url should start with /',
+        message: 'Path should start with /',
       })
     }
 
-    mockModel.saveOrNew(url)
+    this.mockModel.saveOrNewPathModel(path)
 
     return res.status(201).json({
       status: 'ok',
-      url,
+      path,
     })
 
   }
 
-  @Delete('/mock')
-  deleteMockUrl(@Param('url') url: string, @Res() res: Response) {
-
+  @Delete('/mock/:path')
+  deleteMockUrl(@Param('path') path: string) {
+    this.mockModel.deletePathModel(path)
+    return 'ok'
   }
 
-  @Post('/mock/url')
+  @Post('/mock/:path')
   saveOrNewMock(
-    @Body('url') url: string,
+    @Param('path') path: string,
     @Body('method') method: string,
+    @Body('description') description: string,
     @Body('responseName') responseName: string,
-    @Body('responseBody') responseBody: any,
+    @Body('status') status: number,
+    @Body('headers') headers: {[key: string]: string},
+    @Body('responseBody') responseBody: string,
   ) {
+    this.mockModel.saveOrNewMethodMock(path, method, description, responseName, status, headers, responseBody)
+    return 'ok'
+  }
+
+  @Put('/mock/:path/:method')
+  updateActiveResponse(
+    @Param('path') path: string,
+    @Param('method') method: string,
+    @Body('acitveResponseName') acitveResponseName: string,
+  ) {
+    this.mockModel.updateActiveResponse(path, method, acitveResponseName)
+    return 'ok'
+  }
+
+  @Delete('/mock/:path/:method')
+  deleteMethodMock(
+    @Param('path') path: string,
+    @Param('method') method: string,
+  ) {
+
+    this.mockModel.deleteMethodMockModel(path, method)
+    return 'ok'
+  }
+
+  @Delete('/mock/:path/:method/:responseName')
+  deleteResponseNameMock(
+    @Param('path') path: string,
+    @Param('method') method: string,
+    @Param('responseName') responseName: string,
+  ) {
+
+    this.mockModel.deleteResponseNameMockModel(path, method, responseName)
     return 'ok'
   }
 }

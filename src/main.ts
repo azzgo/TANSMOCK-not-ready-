@@ -1,6 +1,5 @@
 import { NestFactory } from '@nestjs/core'
 import { ApplicationModule } from './app/app.module'
-import openurl from 'openurl'
 import { configUtil, IMockOptions } from 'src/configs/config'
 
 
