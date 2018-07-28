@@ -1,4 +1,5 @@
-import defaultOptions from 'src/configs/default.config'
+import defaultOptions from 'src/constants/default.config'
+import { Injectable } from '@nestjs/common'
 
 export interface IMockOptions {
   server?: {
@@ -11,7 +12,8 @@ export interface IMockOptions {
   }
 }
 
-class Config {
+@Injectable()
+export class ConfigService {
   private config = defaultOptions
 
   getConfig() {
@@ -26,4 +28,3 @@ class Config {
   }
 }
 
-export const configUtil = new Config()

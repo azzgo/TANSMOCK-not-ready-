@@ -2,3 +2,5 @@
 *DE_Store
 yarn-error.log
 mock.db
+.vscode/
+dist/

@@ -1,5 +1,5 @@
 import path from 'path'
-import { IMockOptions } from 'src/configs/config'
+import { IMockOptions } from 'src/shared/config.service'
 
 const defaultOptions: IMockOptions = {
   database: {

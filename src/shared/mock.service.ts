@@ -1,7 +1,7 @@
 import lowdb from 'lowdb'
 import FileSync from 'lowdb/adapters/FileSync'
-import { configUtil } from 'src/configs/config'
 import { Injectable } from '@nestjs/common'
+import { ConfigService } from 'src/shared/config.service'
 
 export interface IMockModel {
   [path: string]: {
@@ -28,8 +28,10 @@ export interface IMockModel {
 export class MockService {
   private db: lowdb.LowdbSync<IMockModel[]>
 
-  constructor() {
-    const config = configUtil.getConfig()
+  constructor(private configService: ConfigService) {}
+
+  init() {
+    const config = this.configService.getConfig()
     const fileAdapter = new FileSync(config.database.path)
     this.db = lowdb(fileAdapter)
     this.db.defaults([]).write()
