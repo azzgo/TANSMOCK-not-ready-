@@ -1,6 +1,5 @@
-import { Controller, Get, Post, Body, Res, Delete, Param, Put } from '@nestjs/common'
+import { Controller, Get, Post, Body, Res, Delete, Param, Put, UseInterceptors } from '@nestjs/common'
 import { MockService } from 'src/shared/mock.service'
-import { Response } from 'express'
 
 @Controller()
 export class MockController {
@@ -13,7 +12,7 @@ export class MockController {
   }
 
   @Post('/mock')
-  createNewMockURL(@Body('path') path: string, @Res() res: Response) {
+  createNewMockURL(@Body('path') path: string, @Res() res: any) {
     if (!path.startsWith('/')) {
       return res.status(400).json({
         message: 'Path should start with /',

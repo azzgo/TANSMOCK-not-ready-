@@ -1,7 +1,14 @@
 import lowdb from 'lowdb'
 import FileSync from 'lowdb/adapters/FileSync'
 import { Injectable } from '@nestjs/common'
-import { ConfigService } from 'src/shared/config.service'
+import pathMath from 'path-match'
+import { ConfigService, IMockOptions } from 'src/shared/config.service'
+
+const route = pathMath({
+  sensitive: false,
+  strict: false,
+  end: false,
+})
 
 export interface IMockModel {
   [path: string]: {
@@ -27,12 +34,13 @@ export interface IMockModel {
 @Injectable()
 export class MockService {
   private db: lowdb.LowdbSync<IMockModel[]>
+  config: IMockOptions
 
   constructor(private configService: ConfigService) {}
 
   init() {
-    const config = this.configService.getConfig()
-    const fileAdapter = new FileSync(config.database.path)
+    this.config = this.configService.getConfig()
+    const fileAdapter = new FileSync(this.config.database.path)
     this.db = lowdb(fileAdapter)
     this.db.defaults([]).write()
   }
@@ -84,5 +92,18 @@ export class MockService {
 
   deleteResponseNameMockModel(path: string, method: string, responseName: string) {
     this.db.unset(`${path}.mock.${method}.responseEnum.${responseName}`).write()
+  }
+
+  findSecificPathMock(routePath: string) {
+    const matchPath = this.db.keys().find(key => {
+      const match = route(this.config.server.prefix + key)(routePath)
+      if (match) {
+        return true
+      }
+    }).value()
+
+    if (matchPath) {
+      return this.db.get(matchPath).value()
+    }
   }
 }
