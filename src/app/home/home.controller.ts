@@ -1,9 +1,10 @@
-import { Controller, Get } from '@nestjs/common'
+import { Controller, Get, Render } from '@nestjs/common'
 
 @Controller('ui-dashboard')
 export class HomeController {
   @Get('/')
+  @Render('home')
   uiView() {
-    return 'home page'
+    return
   }
 }

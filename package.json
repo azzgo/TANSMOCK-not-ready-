@@ -1,13 +1,13 @@
 {
   "name": "tansmock",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/main.js",
   "license": "MIT",
   "scripts": {
-    "build": "rimraf dist && tsc",
     "start": "ts-node -r tsconfig-paths/register src/main.dev.ts",
     "start:dev": "nodemon",
     "start:prod": "node dist/main.dev.js",
+    "build": "rimraf dist && tsc",
     "lint": "tslint -p tsconfig.json"
   },
   "dependencies": {
@@ -15,6 +15,7 @@
     "@nestjs/core": "^5.1.0",
     "@types/express": "^4.16.0",
     "@types/lodash": "^4.14.112",
+    "ejs": "^2.6.1",
     "express": "^4.16.3",
     "lodash": "^4.17.10",
     "lowdb": "^1.0.0",
